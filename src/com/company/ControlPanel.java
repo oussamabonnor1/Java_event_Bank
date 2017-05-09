@@ -21,13 +21,15 @@ public class ControlPanel extends JFrame {
     private JPanel contentPane;
     private JTextField textField;
     private String userName;
-    private float currentBalance;
+    private int currentBalance;
+    private String[] transactions = new String[8];
+    int currentTransaction = 0;
 
-    public float getCurrentBalance() {
+    public int getCurrentBalance() {
         return currentBalance;
     }
 
-    public void setCurrentBalance(float currentBalance) {
+    public void setCurrentBalance(int currentBalance) {
         this.currentBalance = currentBalance;
     }
 
@@ -50,9 +52,10 @@ public class ControlPanel extends JFrame {
     /**
      * Create the frame.
      */
-    public ControlPanel(String userName, float currentBalance) {
+    public ControlPanel(String userName, int currentBalance) {
         this.userName = userName;
         this.currentBalance = currentBalance;
+        transactions[0] = "What you did reacently";
 
         int screenPositionX = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 - 300;
         int screenPositionY = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2 - 280;
@@ -101,11 +104,31 @@ public class ControlPanel extends JFrame {
         lblError.setFont(new Font("Century Gothic", Font.PLAIN, 25));
         lblError.setBounds(86, 264, 426, 35);
         panel.add(lblError);
+        lblError.setVisible(false);
 
-        JButton btnCashoutAmount = new JButton("Cashout Amount: " + getCurrentBalance() + " Da");
+        JButton btnCashoutAmount = new JButton("Cashout Amount: ");
         btnCashoutAmount.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+                if (textField.getText().isEmpty()) {
+                    lblError.setVisible(true);
+                    lblError.setText("Error: No Input !");
+                } else {
+                    lblError.setVisible(false);
 
+                    int deductedValue = Integer.valueOf(textField.getText());
+                    if (deductedValue > getCurrentBalance()) {
+                        lblError.setVisible(true);
+                        lblError.setText("Error: You're not THAT rich");
+                    } else {
+                        ++currentTransaction;
+                        setCurrentBalance(getCurrentBalance() - deductedValue);
+                        textField.setText("");
+                        lblCurrentAcount.setText("Current Amount: " + getCurrentBalance() + " Da");
+
+                        String whatToWrite = "" + currentTransaction + ")- " + (getCurrentBalance() + deductedValue) + " - " + deductedValue + " = " + getCurrentBalance();
+                        settingTransactions(currentTransaction, whatToWrite);
+                    }
+                }
             }
         });
         btnCashoutAmount.setForeground(Color.WHITE);
@@ -117,7 +140,8 @@ public class ControlPanel extends JFrame {
         JButton btnShowHistory = new JButton("Show history");
         btnShowHistory.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-
+                HistoryViewer historyViewer = new HistoryViewer(transactions);
+                historyViewer.setVisible(true);
             }
         });
         btnShowHistory.setForeground(Color.WHITE);
@@ -129,10 +153,26 @@ public class ControlPanel extends JFrame {
         JButton btnAddAmount = new JButton("Add Amount");
         btnAddAmount.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                float addedValue = Float.valueOf(textField.getText());
-                setCurrentBalance(getComponentCount() + addedValue);
-                textField.setText("");
-                lblCurrentAcount.setText("Current Amount: " + getCurrentBalance());
+                if (textField.getText().isEmpty()) {
+                    lblError.setVisible(true);
+                    lblError.setText("Error: No Input !");
+                } else {
+                    lblError.setVisible(false);
+
+                    int addedValue = Integer.valueOf(textField.getText());
+                    if (addedValue > 99999) {
+                        lblError.setVisible(true);
+                        lblError.setText("Error: Be realistic");
+                    } else {
+                        ++currentTransaction;
+                        setCurrentBalance(getCurrentBalance() + addedValue);
+                        textField.setText("");
+                        lblCurrentAcount.setText("Current Amount: " + getCurrentBalance() + " Da");
+
+                        String whatToWrite = "(" +")- " + (getCurrentBalance() - addedValue) + " + " + addedValue + " = " + getCurrentBalance();
+                        settingTransactions(currentTransaction, whatToWrite);
+                    }
+                }
             }
         });
         btnAddAmount.setBackground(new Color(0, 204, 153));
@@ -142,5 +182,19 @@ public class ControlPanel extends JFrame {
         panel.add(btnAddAmount);
     }
 
+    void settingTransactions(int currentTransaction, String whatToWrite) {
+        if (currentTransaction < 8) {
+            transactions[currentTransaction] = whatToWrite;
+        } else {
+
+            for (int i = transactions.length - 1; i > 1; i--) {
+                if (i == 1) {
+                    transactions[i] = whatToWrite;
+                } else {
+                    transactions[i] = transactions[i - 1];
+                }
+            }
+        }
+    }
 }
 
