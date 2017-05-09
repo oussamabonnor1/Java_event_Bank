@@ -15,6 +15,12 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 public class ControlPanel extends JFrame {
 
@@ -125,7 +131,10 @@ public class ControlPanel extends JFrame {
                         textField.setText("");
                         lblCurrentAcount.setText("Current Amount: " + getCurrentBalance() + " Da");
 
-                        String whatToWrite = "" + currentTransaction + ")- " + (getCurrentBalance() + deductedValue) + " - " + deductedValue + " = " + getCurrentBalance();
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+                        LocalTime localDate = LocalTime.now();
+
+                        String whatToWrite = "(" + dtf.format(localDate)+ ")- " + (getCurrentBalance() + deductedValue) + " - " + deductedValue + " = " + getCurrentBalance();
                         settingTransactions(currentTransaction, whatToWrite);
                     }
                 }
@@ -169,7 +178,10 @@ public class ControlPanel extends JFrame {
                         textField.setText("");
                         lblCurrentAcount.setText("Current Amount: " + getCurrentBalance() + " Da");
 
-                        String whatToWrite = "(" +")- " + (getCurrentBalance() - addedValue) + " + " + addedValue + " = " + getCurrentBalance();
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+                        LocalTime localDate = LocalTime.now();
+
+                        String whatToWrite = "("+dtf.format(localDate)+")- " + (getCurrentBalance() - addedValue) + " + " + addedValue + " = " + getCurrentBalance();
                         settingTransactions(currentTransaction, whatToWrite);
                     }
                 }
