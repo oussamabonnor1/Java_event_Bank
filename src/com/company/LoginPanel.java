@@ -117,9 +117,9 @@ public class LoginPanel extends JFrame {
                     return;
                 }
 
-                if(passwordField.getPassword().length < 8){
+                if(passwordField.getPassword().length < 7){
                     lblPasswordJavaday.setVisible(true);
-                    lblPasswordJavaday.setText("Password needs +7 letters");
+                    lblPasswordJavaday.setText("Password needs +6 letters");
                     return;
                 }
 
@@ -131,7 +131,7 @@ public class LoginPanel extends JFrame {
                     return;
                 }else{
                     setVisible(false);
-                    ControlPanel controlPanel = new ControlPanel(textField.getText());
+                    ControlPanel controlPanel = new ControlPanel(textField.getText(),1000);
                     controlPanel.setVisible(true);
                 }
             }

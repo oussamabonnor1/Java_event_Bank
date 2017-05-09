@@ -23,6 +23,14 @@ public class ControlPanel extends JFrame {
     private String userName;
     private float currentBalance;
 
+    public float getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public void setCurrentBalance(float currentBalance) {
+        this.currentBalance = currentBalance;
+    }
+
     /**
      * Launch the application.
      */
@@ -30,7 +38,7 @@ public class ControlPanel extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    ControlPanel frame = new ControlPanel("");
+                    ControlPanel frame = new ControlPanel("user", 1000);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -42,15 +50,15 @@ public class ControlPanel extends JFrame {
     /**
      * Create the frame.
      */
-    public ControlPanel(String userName) {
+    public ControlPanel(String userName, float currentBalance) {
         this.userName = userName;
-
+        this.currentBalance = currentBalance;
 
         int screenPositionX = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 - 300;
         int screenPositionY = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2 - 280;
 
 
-        setTitle("Welcome "+userName);
+        setTitle("Welcome " + userName);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(screenPositionX, screenPositionY, 599, 565);
@@ -71,23 +79,13 @@ public class ControlPanel extends JFrame {
         lblBankSimulator.setBounds(156, 57, 278, 51);
         panel.add(lblBankSimulator);
 
-        JLabel lblPasswordJavaday = new JLabel("Current Account: ");
-        lblPasswordJavaday.setHorizontalAlignment(SwingConstants.CENTER);
-        lblPasswordJavaday.setForeground(new Color(0, 204, 153));
-        lblPasswordJavaday.setFont(new Font("Century Gothic", Font.PLAIN, 25));
-        lblPasswordJavaday.setBounds(86, 146, 426, 45);
-        panel.add(lblPasswordJavaday);
+        JLabel lblCurrentAcount = new JLabel("Current Amount: " + getCurrentBalance() + " Da");
+        lblCurrentAcount.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCurrentAcount.setForeground(new Color(0, 204, 153));
+        lblCurrentAcount.setFont(new Font("Century Gothic", Font.PLAIN, 25));
+        lblCurrentAcount.setBounds(86, 146, 426, 45);
+        panel.add(lblCurrentAcount);
 
-        JButton btnForgtoPassword = new JButton("Add Amount");
-        btnForgtoPassword.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-            }
-        });
-        btnForgtoPassword.setBackground(new Color(0, 204, 153));
-        btnForgtoPassword.setForeground(new Color(255, 255, 255));
-        btnForgtoPassword.setFont(new Font("Century Gothic", Font.BOLD, 16));
-        btnForgtoPassword.setBounds(209, 301, 167, 35);
-        panel.add(btnForgtoPassword);
 
         textField = new JTextField();
         textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -96,20 +94,52 @@ public class ControlPanel extends JFrame {
         panel.add(textField);
         textField.setColumns(10);
 
-        JButton btnCashoutAmount = new JButton("Cashout Amount");
+
+        JLabel lblError = new JLabel("Error: ");
+        lblError.setHorizontalAlignment(SwingConstants.CENTER);
+        lblError.setForeground(new Color(0, 204, 153));
+        lblError.setFont(new Font("Century Gothic", Font.PLAIN, 25));
+        lblError.setBounds(86, 264, 426, 35);
+        panel.add(lblError);
+
+        JButton btnCashoutAmount = new JButton("Cashout Amount: " + getCurrentBalance() + " Da");
+        btnCashoutAmount.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+
+            }
+        });
         btnCashoutAmount.setForeground(Color.WHITE);
         btnCashoutAmount.setFont(new Font("Century Gothic", Font.BOLD, 16));
         btnCashoutAmount.setBackground(new Color(0, 204, 153));
-        btnCashoutAmount.setBounds(209, 363, 167, 35);
+        btnCashoutAmount.setBounds(209, 390, 167, 35);
         panel.add(btnCashoutAmount);
 
         JButton btnShowHistory = new JButton("Show history");
+        btnShowHistory.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+
+            }
+        });
         btnShowHistory.setForeground(Color.WHITE);
         btnShowHistory.setFont(new Font("Century Gothic", Font.BOLD, 16));
         btnShowHistory.setBackground(new Color(0, 204, 153));
-        btnShowHistory.setBounds(209, 429, 167, 35);
+        btnShowHistory.setBounds(209, 456, 167, 35);
         panel.add(btnShowHistory);
 
+        JButton btnAddAmount = new JButton("Add Amount");
+        btnAddAmount.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                float addedValue = Float.valueOf(textField.getText());
+                setCurrentBalance(getComponentCount() + addedValue);
+                textField.setText("");
+                lblCurrentAcount.setText("Current Amount: " + getCurrentBalance());
+            }
+        });
+        btnAddAmount.setBackground(new Color(0, 204, 153));
+        btnAddAmount.setForeground(new Color(255, 255, 255));
+        btnAddAmount.setFont(new Font("Century Gothic", Font.BOLD, 16));
+        btnAddAmount.setBounds(209, 326, 167, 35);
+        panel.add(btnAddAmount);
     }
 
 }
