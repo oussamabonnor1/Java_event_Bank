@@ -149,8 +149,6 @@ public class LoginPanel extends JFrame {
         btnForgtoPassword.setBounds(120, 429, 167, 25);
         panel.add(btnForgtoPassword);
 
-
-
     }
 }
 
