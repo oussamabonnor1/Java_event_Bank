@@ -20,9 +20,6 @@ public class LoginPanel extends JFrame {
     private JTextField textField;
     private JPasswordField passwordField;
 
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
